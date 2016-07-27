@@ -10,17 +10,22 @@ class Editor {
         const code = this.editor.getValue() 
         new Function(
             `
-                setInterval(function(){
-                    if (!window.midi.playing) {
-                        for (var i = 1; i < 99; i++)
-                            window.clearInterval(i);
-                    }
-                }, 100);
                 ${code}
-                return false
             `
         )()
     }
 };
 
 export const editor = new Editor
+
+
+// `
+//     setInterval(function(){
+//         if (!window.midi.playing) {
+//             for (var i = 1; i < 99; i++)
+//                 window.clearInterval(i);
+//         }
+//     }, 100);
+//     ${code}
+//     return false
+// `
