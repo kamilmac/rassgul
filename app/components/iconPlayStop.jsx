@@ -5,7 +5,8 @@ export class IconPlayStop extends Component {
         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" viewBox="0 0 120.29 122.84">
             <defs>
                 <style>
-                    .cls-1{fill:#8cc63f;fill-rule:evenodd;}
+                    .cls-1{fill:#3cd895;fill-rule:evenodd;}
+                    .disabled{fill:#5d5d5d;fill-rule:evenodd;}
                 </style>
             </defs>
             <title>Untitled-10</title>
@@ -13,20 +14,32 @@ export class IconPlayStop extends Component {
         </svg>
     `
     firstPath = 'M39.53,153.5V32.57L127.44,93h0Z'
-    secondPath = 'M39.53,153.5V32.57H160.47V153.5Z'
+    secondPath = 'M51.9,141.1V44.9h96.2v96.2H51.9'
     startPath = null
     componentDidMount() {
-        this.startPath = Snap.select('#start') 
+        this.startPath = Snap.select('#start')
         this.startPath.attr({ d: this.firstPath })
+        this.disable()
     }
     animate(path) {
-        if(!this.startPath) return
         this.startPath.animate({d: path}, 300, mina.bounce)
     }
+    disable() {
+        this.startPath.attr({ class: 'cls-1 disabled' })
+    }
+    enable() {
+        this.startPath.attr({ class: 'cls-1' })
+    }
     render() {
-        switch (this.props.active) {
-            case true: this.animate(this.secondPath); break 
-            case false: this.animate(this.firstPath); break 
+        if(this.startPath) {
+            switch (this.props.disabled) {
+                case true: this.disable(); break 
+                case false: this.enable(); break 
+            }
+            switch (this.props.active) {
+                case true: this.animate(this.secondPath); break 
+                case false: this.animate(this.firstPath); break 
+            }
         }
         return (
             <div id="svg1"><div dangerouslySetInnerHTML={{ __html: this.svg }} /></div>

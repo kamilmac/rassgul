@@ -3,24 +3,13 @@ h1 {
     font-size: 40px;
 }
 .toolbar {
+    padding: 10px;
     background: #2f3129;
     position: absolute;
     height: 100%;
     width: 50px;
     top: 0;
     left: 0;
-    &-buttons__play {
-        width: 20px;
-        height: 20px;
-        background: #46cc5c;
-        &--stopped {
-            width: 0;
-            height: 0;
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            border-left: 20px solid #46cc5c;
-        }
-    }
 }
 #editor { 
     position: absolute;
@@ -28,4 +17,7 @@ h1 {
     right: 0;
     bottom: 0;
     left: 50px;
+}
+.ace_gutter {
+    background: #272822 !important;
 }
