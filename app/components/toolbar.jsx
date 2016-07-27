@@ -8,11 +8,13 @@ import {IconPlayStop} from './iconPlayStop'
 @observer
 export class Toolbar extends Component {
     @observable active = false
+    
     play() {
-        if(!midi.initSuccess) return
+        if (!midi.initSuccess) return
         this.active = !this.active
-        player.toggle();
+        player.toggle()
     }
+    
     render() {
         return (
             <div className="toolbar">
