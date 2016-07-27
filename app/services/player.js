@@ -5,7 +5,6 @@ class Player {
     @observable tempo = 120
     @observable swing = 0.3
     swingDirection = 1
-    interval = null
     beat = 4
     counter = 1
     constructor() {
@@ -18,17 +17,16 @@ class Player {
         window.rass.newLoop = this.newLoop
     }
     newLoop(divider, callback) {
-        window.rass.loops.push({ divider, callback })
+        window.rass.loops.push({divider, callback})
     }
     @action stop = () => {
         this.playing = false
-        // clearInterval(this.interval)
         window.rass.loops = []
     };
     @action play = () => {
         this.playing = true
-        let tempo = 60/this.tempo/this.beat*1000 
         this.counter = 1
+        let tempo = 60/this.tempo/this.beat*1000 
         this.tick(tempo)
     };
     tick(delay) {
@@ -37,9 +35,9 @@ class Player {
         setTimeout(()=>{
             if(this.playing) this.tick(delay)
             window.rass.loops.map((loop) => {
-                if ((this.counter-1) % (this.beat / loop.divider) == 0) {
+                if((this.counter-1) % (this.beat / loop.divider) == 0) {
                     loop.callback()
-                } 
+                }
             })
             this.counter++
             if(this.counter>this.beat) this.counter = 1

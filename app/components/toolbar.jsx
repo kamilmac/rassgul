@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { observer } from 'mobx-react'
-import { observable } from 'mobx'
-import { player } from '../services/player'
-import { midi } from '../services/midi'
-import { IconPlayStop } from './iconPlayStop'
+import React, {Component} from 'react'
+import {observer} from 'mobx-react'
+import {observable} from 'mobx'
+import {player} from '../services/player'
+import {midi} from '../services/midi'
+import {IconPlayStop} from './iconPlayStop'
 
 @observer
 export class Toolbar extends Component {
@@ -16,8 +16,8 @@ export class Toolbar extends Component {
     render() {
         return (
             <div className="toolbar">
-                <div onClick={ this.play.bind(this) } >
-                    <IconPlayStop active={this.active} disabled={ !midi.initSuccess } />
+                <div onClick={this.play.bind(this)}>
+                    <IconPlayStop active={this.active} disabled={!midi.initSuccess} />
                 </div>
             </div>
         )
