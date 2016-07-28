@@ -3,7 +3,7 @@ import {observable, action, autorun} from 'mobx';
 class Player {
     @observable playing = false
     @observable tempo = 120
-    @observable swing = 0.3
+    @observable swing = 0
     
     swingDirection = 1
     beat = 4
@@ -37,6 +37,14 @@ class Player {
 
     @action toggle = () => {
         (!this.playing) ? this.play() : this.stop()
+    }
+
+    @action setTempo = (newTempo) => {
+        this.tempo = newTempo
+    }
+
+    @action setSwing = (newSwing) => {
+        this.swing = newSwing
     }
 
     nextTick(delay) {
