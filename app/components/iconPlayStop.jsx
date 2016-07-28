@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Snap from 'imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg-min.js'
 
 export class IconPlayStop extends Component {
     startPath = null
