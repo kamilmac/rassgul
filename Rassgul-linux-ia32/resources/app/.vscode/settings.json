@@ -1,0 +1,4 @@
+{
+    //disable default javascript validator replaced by eslint
+    "javascript.validate.enable" : false 
+} 
