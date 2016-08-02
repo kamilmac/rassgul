@@ -60,6 +60,8 @@ export const midi = new Midi
 //     {note:49,chance:1},
 //     {note:0,chance:30},
 // ]
+// let shiftTime = 32
+// let shifts = [0, 3, 0, 2, 6]
 // let magic = []
 
 // rass.newLoop(4, function() {
@@ -73,7 +75,15 @@ export const midi = new Midi
 //     }
 // }
 
+// let counter = 0
+// let shift = 0
 // for(let i = 0; i < 10000; i++) {
 //     let note = Math.floor(Math.random() * (magic.length - 0))
-//     buffer.push(magic[note])
+//     buffer.push(magic[note] + shifts[shift])
+//     counter++
+//     if (counter+1 == shiftTime) {
+//         shift++
+//         counter = 0
+//         if (shift+1 == shifts.length) shift = 0
+//     }
 // }
