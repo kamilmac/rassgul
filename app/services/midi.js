@@ -48,7 +48,6 @@ class Midi {
 
 export const midi = new Midi
 
-
 // let buffer = []
 // let min = 30
 // let max = 80
