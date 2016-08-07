@@ -31,10 +31,16 @@ class Midi {
         return p
     }
 
-    playNote(note, duration) {
-        const noteOnMessage = [0x90, note, 0x7f]
-        window.rass.output.send(noteOnMessage)
-        window.rass.output.send([0x80, note, 0x40], window.performance.now() + duration)
+    playNote(note, duration, channel=1) {
+        const 
+            noteOnMessage = [0x90+(channel-1), note, 0x7f],
+            noteOffMessage = [0x80+(channel-1), note, 0x40]
+        this.send(noteOnMessage)
+        this.send(noteOffMessage, window.performance.now() + duration)
+    }
+
+    send(data, timeout=null) {
+        window.rass.output.send(data, timeout)
     }
 
     init() {
