@@ -10,37 +10,39 @@ class Midi {
     }
 
     onMIDISuccess(midiAccess) {
-        this.outputPort = this.getPort(midiAccess)
-        if (!this.outputPort) return 
+        this.outputPorts = this.getPorts(midiAccess)
+        if (this.outputPorts.length <= 0) return 
         this.initSuccess = true
         window.rass = window.rass || {}
-        window.rass.output = midiAccess.outputs.get(this.outputPort)
+        window.rass.outputs = []
+        this.outputPorts.forEach((e, i, a) => {
+            window.rass.outputs.push(midiAccess.outputs.get(e))
+        })
         window.rass.access = midiAccess
-        window.rass.playNote = this.playNote
     }
 
     onMIDIFailure(e) {
         console.log("No access to MIDI devices" + e)
     }
 
-    getPort(midiAccess) {
-        let p = null
+    getPorts(midiAccess) {
+        let p = []
         for (let port of midiAccess.outputs) {
-            p = port[0]
+            p.push(port[0])
         }
         return p
     }
 
-    playNote(note, duration, channel=1) {
+    playNote(output, note, duration, channel=1) {
         const 
             noteOnMessage = [0x90+(channel-1), note, 0x7f],
             noteOffMessage = [0x80+(channel-1), note, 0x40]
-        this.send(noteOnMessage)
-        this.send(noteOffMessage, window.performance.now() + duration)
+        this.send(output, noteOnMessage)
+        this.send(output, noteOffMessage, window.performance.now() + duration)
     }
 
-    send(data, timeout=null) {
-        window.rass.output.send(data, timeout)
+    send(output=0, data, timeout=null) {
+        window.rass.outputs[output].send(data, timeout)
     }
 
     init() {

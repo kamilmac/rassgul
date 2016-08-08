@@ -1,4 +1,3 @@
-import {observable, action} from 'mobx'
 import {midi} from './midi'
 
 class VolcaSample {
@@ -19,8 +18,9 @@ class VolcaSample {
         this.init()
     }
 
-    parseNote(note) {
-        const 
+    parseSpeed(note) {
+        const
+            shift = 64,
             noteToSpeed = {
                 '-12': -32,
                 '-11': -30,
@@ -48,31 +48,45 @@ class VolcaSample {
                 '11': 30,
                 '12': 32,
             },
-            speed = noteToSpeed[note-60] + 64
-        if(!speed) return 64
+            speed = noteToSpeed[note-60] + shift
+        if(!speed) return shift
         return speed
     }
 
-    play(padNumber, options) {
+    play(padNumber, props) {
         const channel = padNumber
-        if (!options) {
-            midi.playNote(60, 50, channel); return
+        if (!props) {
+            midi.playNote(1, 60, 50, channel); return
         }
-        if (parseInt(options) === options) {
-            midi.send([176+(channel-1), 43, window.rass.volcaSample.parseNote(options)])
-            midi.playNote(60, 50, channel); return
+        if (parseInt(props) === props) {
+            midi.send(1, [
+                176 + (channel-1), 
+                43,
+                window.rass.volcaSample.parseSpeed(props)
+            ])
+            midi.playNote(1, 60, 50, channel); return
         }
-        if (typeof options === 'object') {
-            for (let key in options) {
-                sendMidiMessage([176, props[key], options[key]])
+        if (typeof props === 'object') {
+            for (let key in props) {
+                modify(channel, key, props[key])
             }
         }
+    }
+
+    modify(padNumber, prop, value) {
+        const channel = padNumber
+        midi.send(1, [
+            176 + (channel-1), 
+            this.props[prop],
+            value
+        ])
     }
 
     init() {
         window.rass.volcaSample = {
             play: this.play,
-            parseNote: this.parseNote,
+            modify: this.modify,
+            parseSpeed: this.parseSpeed,
         }
     }
 }
