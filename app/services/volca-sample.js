@@ -1,4 +1,4 @@
-import {midi} from './midi'
+import * as midi from './midi'
 
 class VolcaSample {
     props = {
@@ -59,7 +59,7 @@ class VolcaSample {
             midi.playNote(1, 60, 50, channel); return
         }
         if (parseInt(props) === props) {
-            midi.send(1, [
+            midi.sendMidiMessage(1, [
                 176 + (channel-1), 
                 43,
                 window.rass.volcaSample.parseSpeed(props)
@@ -75,7 +75,7 @@ class VolcaSample {
 
     modify(padNumber, prop, value) {
         const channel = padNumber
-        midi.send(1, [
+        midi.sendMidiMessage(1, [
             176 + (channel-1), 
             this.props[prop],
             value
@@ -83,6 +83,7 @@ class VolcaSample {
     }
 
     init() {
+        window.rass = window.rass || {}
         window.rass.volcaSample = {
             play: this.play,
             modify: this.modify,

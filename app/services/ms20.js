@@ -1,19 +1,5 @@
-import {midi} from './midi'
+import * as midi from './midi'
+import make from './global'
 
-class Ms20 {
-    constructor() {
-        this.init()
-    }
-
-    play(note) {
-        midi.playNote(0, 60, 50); return
-    }
-
-    init() {
-        window.rass.ms20 = {
-            play: this.play,
-        }
-    }
-}
-
-export const ms20 = new Ms20
+export const play = (note) => midi.playNote(0, note, 50)
+make(['ms20','play'], play)

@@ -2,42 +2,21 @@ import ace from 'brace'
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
 
-class Editor {
-    editor = null
-    saveIntervalTime = 4000
-    
-    attach() {
-        this.editor = ace.edit("editor")
-        this.editor.setTheme("ace/theme/monokai")
-        this.editor.getSession().setMode("ace/mode/javascript")
-        this.loadFromLS()
-        this.savePeriodically()
-    }
+export const attach = (id) => {
+    const editor = ace.edit(id)
+    editor.setTheme('ace/theme/monokai')
+    editor.getSession().setMode('ace/mode/javascript')
+    return editor
+}
 
-    executeCode() {
-        const code = this.editor.getValue()
-        new Function(
-            `
-                ${code}
-            `
-        )()
-    }
+export const executeCode = (editor) => new Function(editor.getValue())()
 
-    savePeriodically() {
-        setInterval(() => {
-            this.saveToLS()
-        }, this.saveIntervalTime)
-    }
+export const initSaveEditorContentInterval = (editor, interval) => ({
+    editor,
+    saveInterval: setInterval(() => {
+        localStorage.setItem('editorCode', editor.getValue())
+    }, interval)
+})
 
-    saveToLS() {
-        localStorage.setItem('editorCode', this.editor.getValue())
-    }
-
-    loadFromLS() {
-        let saved = localStorage.getItem('editorCode')
-        if (!saved) return
-        this.editor.setValue(saved)
-    }
-};
-
-export const editor = new Editor
+export const fillEditorFromLS = (editor) =>
+    editor.setValue(localStorage.getItem('editorCode'))

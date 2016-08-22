@@ -1,43 +1,33 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {observer} from 'mobx-react'
-import {observable} from 'mobx'
-import {player} from '../services/player'
-import {midi} from '../services/midi'
+import * as player from '../services/player'
+import {store} from '../services/store'
 import {IconPlayStop} from './iconPlayStop'
 
-@observer
-export class Toolbar extends Component {
-    @observable active = false
-    
-    play() {
-        if (!midi.initSuccess) return
-        this.active = !this.active
-        player.toggle()
-    }
+const play = () => {
+    (!store.midi.initiated) ? null : player.toggle()
+}
 
-    tempoChange = (e) => {
-        if (e.key === 'Enter') {
-            player.setTempo(event.target.value = (parseInt(event.target.value) || player.tempo))
-        }
-    }
-    
-    swingChange = (event) => {
-        if (event.key === 'Enter') {
-            player.setSwing(event.target.value = (parseFloat(event.target.value) || player.swing).toFixed(1))
-        }
-    }
+const tempoChange = (e) => {
+    (e.key === 'Enter') ?
+        player.setTempo(event.target.value = (parseInt(event.target.value) || store.player.tempo))
+        : null
+}
 
-    render() {
-        return (
-            <div className="toolbar">
-                <div onClick={this.play.bind(this)}>
-                    <IconPlayStop active={this.active} disabled={!midi.initSuccess} />
-                </div>
-                <span>tempo</span>
-                <input type="text" placeholder={player.tempo} onKeyPress={this.tempoChange} />
-                <span>swing</span>
-                <input type="text" placeholder={player.swing} onKeyPress={this.swingChange} />
-            </div>
-        )
-    }
-} 
+const swingChange = (event) => {
+    (event.key === 'Enter') ?
+        player.setSwing(event.target.value = (parseFloat(event.target.value) || store.player.swing).toFixed(1))
+        : null
+}
+
+export const Toolbar = observer(() =>  
+    <div className="toolbar">
+        <div onClick={play}>
+            <IconPlayStop active={store.player.playing} disabled={!store.midi.initiated} />
+        </div>
+        <span>tempo</span>
+        <input type="text" placeholder={store.player.tempo} onKeyPress={tempoChange} />
+        <span>swing</span>
+        <input type="text" placeholder={store.player.swing} onKeyPress={swingChange} />
+    </div>
+)
